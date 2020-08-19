@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MultiplexDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="bookingID" />
+          </Key>
+          <Property Name="bookingID" Type="int" Nullable="false" />
+          <Property Name="showID" Type="int" />
+          <Property Name="userID" Type="int" />
+          <Property Name="bookedDate" Type="date" />
+          <Property Name="showDate" Type="date" />
+          <Property Name="seatTypeDesc" Type="varchar" MaxLength="50" />
+          <Property Name="noOfSeats" Type="int" />
+          <Property Name="foodID" Type="int" />
+          <Property Name="seatFare" Type="float" />
+        </EntityType>
+        <EntityType Name="food">
+          <Key>
+            <PropertyRef Name="foodID" />
+          </Key>
+          <Property Name="foodID" Type="int" Nullable="false" />
+          <Property Name="foodType" Type="varchar" MaxLength="50" />
+          <Property Name="foodName" Type="varchar" MaxLength="50" />
+          <Property Name="foodFare" Type="float" />
+        </EntityType>
+        <EntityType Name="hall">
+          <Key>
+            <PropertyRef Name="hallID" />
+          </Key>
+          <Property Name="hallID" Type="int" Nullable="false" />
+          <Property Name="hallDesc" Type="varchar" MaxLength="50" />
+          <Property Name="totalCap" Type="int" />
+        </EntityType>
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="movieID" />
+          </Key>
+          <Property Name="movieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="movieName" Type="varchar" MaxLength="50" />
+          <Property Name="movieLang" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="show">
+          <Key>
+            <PropertyRef Name="showID" />
+          </Key>
+          <Property Name="showID" Type="int" Nullable="false" />
+          <Property Name="hallID" Type="int" />
+          <Property Name="movieID" Type="int" />
+          <Property Name="slotNo" Type="int" />
+          <Property Name="fromDate" Type="date" />
+          <Property Name="toDate" Type="date" />
+          <Property Name="bookingID" Type="int" />
+        </EntityType>
+        <EntityType Name="Useer">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" />
+          <Property Name="userType" Type="varchar" MaxLength="50" />
+          <Property Name="mobileNo" Type="varchar" MaxLength="50" />
+          <Property Name="emailID" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_booking_food">
+          <End Role="food" Type="Self.food" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="food">
+              <PropertyRef Name="foodID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="foodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_show1">
+          <End Role="show" Type="Self.show" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="show">
+              <PropertyRef Name="showID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="showID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_Useer">
+          <End Role="Useer" Type="Self.Useer" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Useer">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_show_hall">
+          <End Role="hall" Type="Self.hall" Multiplicity="0..1" />
+          <End Role="show" Type="Self.show" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hall">
+              <PropertyRef Name="hallID" />
+            </Principal>
+            <Dependent Role="show">
+              <PropertyRef Name="hallID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_show_movie">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="show" Type="Self.show" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="movieID" />
+            </Principal>
+            <Dependent Role="show">
+              <PropertyRef Name="movieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MultiplexDBModelStoreContainer">
+          <EntitySet Name="booking" EntityType="Self.booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="food" EntityType="Self.food" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hall" EntityType="Self.hall" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="movie" EntityType="Self.movie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="show" EntityType="Self.show" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Useer" EntityType="Self.Useer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_booking_food" Association="Self.FK_booking_food">
+            <End Role="food" EntitySet="food" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_show1" Association="Self.FK_booking_show1">
+            <End Role="show" EntitySet="show" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_Useer" Association="Self.FK_booking_Useer">
+            <End Role="Useer" EntitySet="Useer" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_show_hall" Association="Self.FK_show_hall">
+            <End Role="hall" EntitySet="hall" />
+            <End Role="show" EntitySet="show" />
+          </AssociationSet>
+          <AssociationSet Name="FK_show_movie" Association="Self.FK_show_movie">
+            <End Role="movie" EntitySet="movie" />
+            <End Role="show" EntitySet="show" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MultiplexDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="bookingID" />
+          </Key>
+          <Property Name="bookingID" Type="Int32" Nullable="false" />
+          <Property Name="showID" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="bookedDate" Type="DateTime" Precision="0" />
+          <Property Name="showDate" Type="DateTime" Precision="0" />
+          <Property Name="seatTypeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="noOfSeats" Type="Int32" />
+          <Property Name="foodID" Type="Int32" />
+          <Property Name="seatFare" Type="Double" />
+          <NavigationProperty Name="food" Relationship="Self.FK_booking_food" FromRole="booking" ToRole="food" />
+          <NavigationProperty Name="show" Relationship="Self.FK_booking_show1" FromRole="booking" ToRole="show" />
+          <NavigationProperty Name="Useer" Relationship="Self.FK_booking_Useer" FromRole="booking" ToRole="Useer" />
+        </EntityType>
+        <EntityType Name="food">
+          <Key>
+            <PropertyRef Name="foodID" />
+          </Key>
+          <Property Name="foodID" Type="Int32" Nullable="false" />
+          <Property Name="foodType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="foodName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="foodFare" Type="Double" />
+          <NavigationProperty Name="bookings" Relationship="Self.FK_booking_food" FromRole="food" ToRole="booking" />
+        </EntityType>
+        <EntityType Name="hall">
+          <Key>
+            <PropertyRef Name="hallID" />
+          </Key>
+          <Property Name="hallID" Type="Int32" Nullable="false" />
+          <Property Name="hallDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="totalCap" Type="Int32" />
+          <NavigationProperty Name="shows" Relationship="Self.FK_show_hall" FromRole="hall" ToRole="show" />
+        </EntityType>
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="movieID" />
+          </Key>
+          <Property Name="movieID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="movieName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="movieLang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="shows" Relationship="Self.FK_show_movie" FromRole="movie" ToRole="show" />
+        </EntityType>
+        <EntityType Name="show">
+          <Key>
+            <PropertyRef Name="showID" />
+          </Key>
+          <Property Name="showID" Type="Int32" Nullable="false" />
+          <Property Name="hallID" Type="Int32" />
+          <Property Name="movieID" Type="Int32" />
+          <Property Name="slotNo" Type="Int32" />
+          <Property Name="fromDate" Type="DateTime" Precision="0" />
+          <Property Name="toDate" Type="DateTime" Precision="0" />
+          <Property Name="bookingID" Type="Int32" />
+          <NavigationProperty Name="bookings" Relationship="Self.FK_booking_show1" FromRole="show" ToRole="booking" />
+          <NavigationProperty Name="hall" Relationship="Self.FK_show_hall" FromRole="show" ToRole="hall" />
+          <NavigationProperty Name="movie" Relationship="Self.FK_show_movie" FromRole="show" ToRole="movie" />
+        </EntityType>
+        <EntityType Name="Useer">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bookings" Relationship="Self.FK_booking_Useer" FromRole="Useer" ToRole="booking" />
+        </EntityType>
+        <Association Name="FK_booking_food">
+          <End Role="food" Type="Self.food" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="food">
+              <PropertyRef Name="foodID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="foodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_show1">
+          <End Role="show" Type="Self.show" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="show">
+              <PropertyRef Name="showID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="showID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_Useer">
+          <End Role="Useer" Type="Self.Useer" Multiplicity="0..1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Useer">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_show_hall">
+          <End Role="hall" Type="Self.hall" Multiplicity="0..1" />
+          <End Role="show" Type="Self.show" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hall">
+              <PropertyRef Name="hallID" />
+            </Principal>
+            <Dependent Role="show">
+              <PropertyRef Name="hallID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_show_movie">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="show" Type="Self.show" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="movieID" />
+            </Principal>
+            <Dependent Role="show">
+              <PropertyRef Name="movieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MultiplexDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="bookings" EntityType="Self.booking" />
+          <EntitySet Name="foods" EntityType="Self.food" />
+          <EntitySet Name="halls" EntityType="Self.hall" />
+          <EntitySet Name="movies" EntityType="Self.movie" />
+          <EntitySet Name="shows" EntityType="Self.show" />
+          <EntitySet Name="Useers" EntityType="Self.Useer" />
+          <AssociationSet Name="FK_booking_food" Association="Self.FK_booking_food">
+            <End Role="food" EntitySet="foods" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_show1" Association="Self.FK_booking_show1">
+            <End Role="show" EntitySet="shows" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_Useer" Association="Self.FK_booking_Useer">
+            <End Role="Useer" EntitySet="Useers" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_show_hall" Association="Self.FK_show_hall">
+            <End Role="hall" EntitySet="halls" />
+            <End Role="show" EntitySet="shows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_show_movie" Association="Self.FK_show_movie">
+            <End Role="movie" EntitySet="movies" />
+            <End Role="show" EntitySet="shows" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MultiplexDBModelStoreContainer" CdmEntityContainer="MultiplexDBEntities">
+          <EntitySetMapping Name="bookings">
+            <EntityTypeMapping TypeName="MultiplexDBModel.booking">
+              <MappingFragment StoreEntitySet="booking">
+                <ScalarProperty Name="bookingID" ColumnName="bookingID" />
+                <ScalarProperty Name="showID" ColumnName="showID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="bookedDate" ColumnName="bookedDate" />
+                <ScalarProperty Name="showDate" ColumnName="showDate" />
+                <ScalarProperty Name="seatTypeDesc" ColumnName="seatTypeDesc" />
+                <ScalarProperty Name="noOfSeats" ColumnName="noOfSeats" />
+                <ScalarProperty Name="foodID" ColumnName="foodID" />
+                <ScalarProperty Name="seatFare" ColumnName="seatFare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="foods">
+            <EntityTypeMapping TypeName="MultiplexDBModel.food">
+              <MappingFragment StoreEntitySet="food">
+                <ScalarProperty Name="foodID" ColumnName="foodID" />
+                <ScalarProperty Name="foodType" ColumnName="foodType" />
+                <ScalarProperty Name="foodName" ColumnName="foodName" />
+                <ScalarProperty Name="foodFare" ColumnName="foodFare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="halls">
+            <EntityTypeMapping TypeName="MultiplexDBModel.hall">
+              <MappingFragment StoreEntitySet="hall">
+                <ScalarProperty Name="hallID" ColumnName="hallID" />
+                <ScalarProperty Name="hallDesc" ColumnName="hallDesc" />
+                <ScalarProperty Name="totalCap" ColumnName="totalCap" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="movies">
+            <EntityTypeMapping TypeName="MultiplexDBModel.movie">
+              <MappingFragment StoreEntitySet="movie">
+                <ScalarProperty Name="movieID" ColumnName="movieID" />
+                <ScalarProperty Name="movieName" ColumnName="movieName" />
+                <ScalarProperty Name="movieLang" ColumnName="movieLang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="shows">
+            <EntityTypeMapping TypeName="MultiplexDBModel.show">
+              <MappingFragment StoreEntitySet="show">
+                <ScalarProperty Name="showID" ColumnName="showID" />
+                <ScalarProperty Name="hallID" ColumnName="hallID" />
+                <ScalarProperty Name="movieID" ColumnName="movieID" />
+                <ScalarProperty Name="slotNo" ColumnName="slotNo" />
+                <ScalarProperty Name="fromDate" ColumnName="fromDate" />
+                <ScalarProperty Name="toDate" ColumnName="toDate" />
+                <ScalarProperty Name="bookingID" ColumnName="bookingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Useers">
+            <EntityTypeMapping TypeName="MultiplexDBModel.Useer">
+              <MappingFragment StoreEntitySet="Useer">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="userType" ColumnName="userType" />
+                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
